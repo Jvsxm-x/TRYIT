@@ -1,0 +1,21 @@
+# config/packages/easy_admin.yaml
+easy_admin:
+  entities:
+    User:
+      class: App\Entity\User
+      list:
+        fields: ['id', 'username', 'email'] # Customize as needed
+      form:
+        fields: ['username', 'email', 'password'] # Customize as needed
+    Adherant:
+      class: App\Entity\Adherant
+      list:
+        fields: ['id', 'name', 'membershipDate'] # Customize as needed
+      form:
+        fields: ['name', 'membershipDate'] # Customize as needed
+    Coach:
+      class: App\Entity\Coach
+      list:
+        fields: ['id', 'name', 'specialty'] # Customize as needed
+      form:
+        fields: ['name', 'specialty'] # Customize as needed
