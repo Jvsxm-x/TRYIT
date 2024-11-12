@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ form.vars.value.id ? 'Edit' : 'New' }} Schedule{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /* Apply uniform width and height to form inputs */
+        .custom-form input, .custom-form select, .custom-form textarea {
+            width: 100%; /* Full width of the parent container */
+            height: 40px; /* Uniform height for all form fields */
+            margin-bottom: 15px; /* Add space between form fields */
+            padding: 10px; /* Padding for inner content */
+            border-radius: 5px; /* Rounded corners */
+        }
+
+        /* Apply custom button styling */
+        .btn {
+            padding: 10px 20px; /* Adjust padding */
+            font-size: 16px; /* Larger text */
+            border-radius: 5px; /* Rounded corners */
+        }
+
+        /* Optional: Style for buttons (hover effects) */
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        /* Optional: Style for the back link */
+        .btn-back {
+            font-size: 16px;
+            padding: 10px 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-4">{{ form.vars.value.id ? 'Edit' : 'New' }} Schedule</h1>
+
+        <!-- Form start with Bootstrap form class -->
+        {{ form_start(form, {'attr': {'class': 'custom-form'}}) }}
+
+        <!-- Add form widget and apply Bootstrap classes -->
+        {{ form_widget(form, {'attr': {'class': 'form-control custom-form-widget'}}) }}
+
+        <!-- Submit Button with Bootstrap button class -->
+        <button type="submit" class="btn btn-primary mt-3">{{ form.vars.value.id ? 'Update' : 'Create' }}</button>
+
+        {{ form_end(form) }}
+
+        <!-- Back to list link with Bootstrap button styling -->
+        <a href="{{ path('scheduler_index') }}" class="btn btn-secondary mt-3">Back to list</a>
+    </div>
+{% endblock %}

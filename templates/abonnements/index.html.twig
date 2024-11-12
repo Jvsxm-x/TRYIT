@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Abonnements index{% endblock %}
+
+{% block body %}
+<style>
+    .user-details-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-details-container h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 26px;
+        color: #333;
+    }
+
+    .user-details-container table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .user-details-container th, .user-details-container td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .user-details-container th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    .user-details-container td {
+        background-color: #fff;
+    }
+
+    .user-details-container .actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .user-details-container a {
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: white;
+        text-align: center;
+    }
+
+    .user-details-container a:hover {
+        background-color: #0056b3;
+    }
+
+    .user-details-container a.delete {
+        background-color: #dc3545;
+    }
+
+    .user-details-container a.delete:hover {
+        background-color: #c82333;
+    }
+</style>
+
+<div class="user-details-container">
+
+<h1>Abonnements index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Price</th>
+                <th>StartDate</th>
+                <th>EndDate</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for abonnement in abonnements %}
+            <tr>
+                <td>{{ abonnement.id }}</td>
+                <td>{{ abonnement.type }}</td>
+                <td>{{ abonnement.price }}</td>
+                <td>{{ abonnement.startDate ? abonnement.startDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ abonnement.endDate ? abonnement.endDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_abonnements_show', {'id': abonnement.id}) }}">show</a>
+                    <a href="{{ path('app_abonnements_edit', {'id': abonnement.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_abonnements_new') }}">Create new</a>
+</div>
+{% endblock %}

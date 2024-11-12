@@ -1,0 +1,193 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Users{% endblock %}
+
+{% block body %}
+    <style>
+        .edit-user-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .edit-user-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 26px;
+            color: #333;
+        }
+
+        .form-container {
+            width: 48%;
+        }
+
+        .form-container label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-container input {
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+        }
+
+        .form-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .actions a {
+            padding: 10px 20px;
+            font-size: 16px;
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .actions a:hover {
+            background-color: #0056b3;
+        }
+
+        .actions a.delete {
+            background-color: #dc3545;
+        }
+
+        .actions a.delete:hover {
+            background-color: #c82333;
+        }
+        #password_warning {
+            color: orange;
+            display: none;
+        }
+
+        #old_password_error {
+            color: red;
+            display: none;
+        }
+    </style>
+    <div class="edit-user-container">
+        <!-- Flash messages for errors -->
+        {% for message in app.session.flashbag.get('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <!-- Left side: Change Password Form -->
+        <div class="form-container">
+            <h1>Change Password</h1>
+
+            <form method="POST" action="{{ path('app_users_edit', {'id': user.id}) }}">
+                <label for="old_password">Old Password</label>
+                <input type="password" id="old_password" name="old_password" required>
+
+                <div id="old_password_error" style="color: red; display: none;">The old password is incorrect.</div>
+
+                <label for="new_password">New Password</label>
+                <input type="password" id="new_password" name="password" required>
+
+                <label for="repeat_new_password">Repeat New Password</label>
+                <input type="password" id="repeat_new_password" name="repeat_new_password" required>
+
+                <div id="password_warning" style="color: orange; display: none;">
+                    Passwords do not match or are weak!
+                </div>
+
+                <button type="submit" name="chnagePassword" id="chnagePassword">Update Password</button>
+            </form>
+        </div>
+
+        <!-- Right side: User Info Form -->
+        <div class="form-container">
+            <h1>Edit User</h1>
+
+            {{ form_start(form) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.name) }}
+            <div hidden="hidden">
+            {{ form_row(form.password) }}
+            {{ form_row(form.roles) }}
+            {{ form_row(form.updatedAt) }}
+            </div>
+            <button type="submit" name="update_details" id="update_details">Update</button>
+            {{ form_end(form) }}
+
+            <div class="date-info">
+                <p>Created At: {{ user.createdAt ? user.createdAt|date("Y-m-d H:i:s") : 'N/A' }}</p>
+                <p>Last Updated: {{ user.updatedAt ? user.updatedAt|date("Y-m-d H:i:s") : 'N/A' }}</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="actions">
+        <a href="{{ path('app_users_index') }}">Back to list</a>
+        <a href="{{ path('app_users_delete', {'id': user.id}) }}" class="delete">Delete</a>
+    </div>
+
+    <script>
+        document.getElementById('new_password').addEventListener('input', validatePassword);
+        document.getElementById('repeat_new_password').addEventListener('input', validatePassword);
+        document.getElementById('old_password').addEventListener('input', validateOldPassword);
+
+        function validatePassword() {
+            const newPassword = document.getElementById('new_password').value;
+            const repeatPassword = document.getElementById('repeat_new_password').value;
+
+            const passwordWarning = document.getElementById('password_warning');
+            if (newPassword !== repeatPassword || newPassword.length < 6) {
+                passwordWarning.style.display = 'block';
+            } else {
+                passwordWarning.style.display = 'none';
+            }
+        }
+
+        function validateOldPassword() {
+            const oldPassword = document.getElementById('old_password').value;
+            const oldPasswordError = document.getElementById('old_password_error');
+
+            if (oldPassword) {
+                oldPasswordError.style.display = 'none'; // Hide error initially
+
+                // Ajax call to verify the old password
+                fetch('{{ path('app_users_verify_old_password', {'id': user.id}) }}', {
+                    method: 'POST',
+                    body: JSON.stringify({ old_password: oldPassword }),
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.valid) {
+                            oldPasswordError.style.display = 'block';
+                        }
+                    });
+            }
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,37 @@
+{# templates/users/coachlist.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}User Coach List{% endblock %}
+
+{% block body %}
+    <h1>User Coach List</h1>
+
+    {% if userCoaches is empty %}
+        <p>No users associated with this coach.</p>
+    {% else %}
+        <table>
+            <thead>
+            <tr>
+                <th>User ID</th>
+                <th>User Name</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for userCoach in userCoaches %}
+                <tr>
+                    <td>{{ userCoach.user.id }}</td>
+                    <td>{{ userCoach.user.name }}</td> {# Adjust based on your User entity's fields #}
+                    <td>
+                        <a href="{{ path('app_usercoach_update', { id: userCoach.id }) }}">Edit</a>
+                        <a href="{{ path('app_usercoach_delete', { id: userCoach.id }) }}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <a href="{{ path('app_usercoach_add') }}">Add User Coach</a>
+{% endblock %}

@@ -1,0 +1,22 @@
+{# templates/coach/adherents.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Adherents List{% endblock %}
+
+{% block body %}
+    <h1>Adherents List for {{ app.user.name }}</h1>
+
+    {% if adherents is empty %}
+        <p>No adherents assigned to you yet.</p>
+    {% else %}
+        <ul>
+            {% for userCoach in adherents %}
+                <li>
+                    <strong>{{ userCoach.name }}</strong>
+                    <p>Assigned since: {{ userCoach.createdAt|date('Y-m-d H:i') }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

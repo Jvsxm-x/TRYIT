@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Calculate IMC and Calories{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Calculate IMC and Calories for Weight Gain</h1>
+
+        {{ form_start(form) }}
+
+        <!-- Height input -->
+        <div class="mb-3">
+            <label for="height" class="form-label">Height (m)</label>
+            <input type="number" id="height" name="height" class="form-control" step="0.01" placeholder="Enter your height in meters" required>
+        </div>
+
+        <!-- Weight input -->
+        <div class="mb-3">
+            <label for="weight" class="form-label">Weight (kg)</label>
+            <input type="number" id="weight" name="weight" class="form-control" step="0.1" placeholder="Enter your weight in kilograms" required>
+        </div>
+
+        <!-- IMC value (calculated) -->
+        <div class="mb-3">
+            <label for="imc" class="form-label">IMC (Body Mass Index)</label>
+            <input type="number" id="imc" name="imc" class="form-control" readonly placeholder="IMC will be calculated here">
+        </div>
+
+        <!-- Calories input -->
+        <div class="mb-3">
+            <label for="calories" class="form-label">Calories for Weight Gain</label>
+            <input type="number" id="calories" name="calories" class="form-control" readonly placeholder="Calories will be calculated here">
+        </div>
+
+        <!-- Meal details input -->
+        <div class="mb-3">
+            <label for="mealDetails" class="form-label">Meal Details (per day)</label>
+            <textarea id="mealDetails" name="mealDetails" class="form-control" rows="3" placeholder="Enter meal details here (e.g., 3 meals + 2 snacks)" required></textarea>
+        </div>
+
+        <!-- Hidden form fields to send the calculated values to the controller -->
+        <div hidden="hidden">
+            {{ form_row(form.imc, {'attr': {'name': 'imc'}}) }}
+            {{ form_row(form.caloriesForWeightGain, {'attr': {'name': 'caloriesForWeightGain'}}) }}
+            {{ form_row(form.mealDetails, {'attr': {'name': 'mealDetails'}}) }}
+        </div>
+
+        <!-- Submit button -->
+        <button class="btn btn-success" type="submit">Submit</button>
+
+        {{ form_end(form) }}
+    </div>
+
+    <script>
+        // Function to calculate IMC (Body Mass Index)
+        function calculateIMC() {
+            var height = parseFloat(document.getElementById('height').value);
+            var weight = parseFloat(document.getElementById('weight').value);
+
+            if (height && weight) {
+                var imc = weight / (height * height);
+                document.getElementById('imc').value = imc.toFixed(2);
+                document.querySelector('#imc_imc').value = document.getElementById('imc').value;
+            // Show the IMC with 2 decimal places
+                calculateCalories(imc);
+                document.querySelector('#imc_mealDetails').value = document.getElementById('mealDetails').value;// Call to calculate calories after IMC is calculated
+            } else {
+                document.getElementById('imc').value = '';
+                document.getElementById('calories').value = '';
+            }
+        }
+
+        // Function to calculate calories for weight gain
+        function calculateCalories(imc) {
+            var calories = 0;
+            if (imc) {
+                // Example calculation based on IMC; you can adjust the logic as per your needs
+                var bmr = 2000; // Example BMR value; you can calculate it dynamically
+                calories = bmr + 500; // Calories for weight gain
+                document.getElementById('calories').value = calories;
+                document.querySelector('#imc_caloriesForWeightGain').value = document.getElementById('calories').value;
+                // Display the calculated calories
+            }
+        }
+
+        // Add event listeners to the height and weight inputs
+        document.getElementById('height').addEventListener('input', calculateIMC);
+        document.getElementById('weight').addEventListener('input', calculateIMC);
+
+        // Before submitting the form, set the values of the hidden form fields
+        document.querySelector('form').addEventListener('submit', function(event) {
+            // Set the hidden inputs with calculated values
+            document.querySelector('#imc_imc').value = document.getElementById('imc').value;
+            document.querySelector('#imc_caloriesForWeightGain').value = document.getElementById('calories').value;
+            document.querySelector('#imc_mealDetails').value = document.getElementById('mealDetails').value;
+        });
+    </script>
+{% endblock %}

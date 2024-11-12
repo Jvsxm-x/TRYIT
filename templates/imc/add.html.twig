@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add IMC and Meal Plan{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Add IMC and Meal Plan for {{ user.name }}</h1>
+
+        <form method="POST" action="{{ path('add_imc', {userId: user.id}) }}">
+            <div class="mb-3">
+                <label for="weight" class="form-label">Weight (kg)</label>
+                <input type="number" name="weight" id="weight" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="height" class="form-label">Height (cm)</label>
+                <input type="number" name="height" id="height" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Calculate IMC</button>
+        </form>
+
+        {% if imc.id is not empty %}
+            <h3 class="mt-5">IMC Calculation Result:</h3>
+            <p><strong>IMC:</strong> {{ imc.imc }}</p>
+            <p><strong>Calories for Weight Gain:</strong> {{ imc.caloriesForWeightGain }} kcal/day</p>
+
+            <form method="POST" action="{{ path('add_meal', {imcId: imc.id}) }}">
+                <div class="mb-3">
+                    <label for="mealDetails" class="form-label">Meal Plan Details</label>
+                    <textarea name="mealDetails" id="mealDetails" class="form-control" required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-success">Save Meal Plan</button>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

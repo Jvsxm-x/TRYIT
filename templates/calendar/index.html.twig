@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Calendar{% endblock %}
+
+{% block body %}
+    <h1>Training Schedule</h1>
+    <!-- Calendar Container -->
+    <div id="calendar"></div>
+
+    <!-- FullCalendar Assets -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                events: [
+                    {% for event in events %}
+                    {
+                        title: 'Training Session',
+                        start: '{{ event.date|date("Y-m-d H:i:s") }}',
+                        extendedProps: {
+                            coach: '{{ event.coach.name }}',
+                            specialty: '{{ event.coach.specialty }}',
+                            adherent: '{{ event.adherant.name }}',
+                            adherentName: '{{ event.adherant.name }}',  // Added this for coach's view
+                        },
+                    },
+                    {% endfor %}
+                ],
+                eventRender: function(info) {
+                    var eventElement = info.el;
+                    var coach = info.event.extendedProps.coach;
+                    var specialty = info.event.extendedProps.specialty;
+                    var adherent = info.event.extendedProps.adherent;
+                    var adherentName = info.event.extendedProps.adherentName;
+
+                    // Check user role: Adherent or Coach
+                    {% if app.user.roles[0] == "ROLE_ADHERANT" %}
+                    // For adherent, show coach and specialty information
+                    eventElement.innerHTML = `
+                            <strong>Coach:</strong> ${coach} (Specialty: ${specialty})<br>
+                            <strong>Training Date:</strong> ${info.event.start.toISOString().slice(0, 16)}
+                        `;
+                    {% elseif app.user.roles[0] == "ROLE_COACH" %}
+                    // For coach, show adherent's name who will train
+                    eventElement.innerHTML = `
+                            <strong>Adherent:</strong> ${adherentName}<br>
+                            <strong>Training Date:</strong> ${info.event.start.toISOString().slice(0, 16)}
+                        `;
+                    {% endif %}
+                },
+                eventClick: function(info) {
+                    alert('Event: ' + info.event.title + "\nCoach: " + info.event.extendedProps.coach + "\nAdherent: " + info.event.extendedProps.adherent);
+                },
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                eventColor: '#378006', // Optional: Customize event colors for clarity
+                editable: false, // Disable editing of events
+            });
+            calendar.render();
+        });
+    </script>
+{% endblock %}

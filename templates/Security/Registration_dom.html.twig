@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /* Additional custom styles, if needed */
+        .container {
+            height: 100vh; /* Full height of the viewport */
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="text-center">
+            <h1>Choose Your Registration Type</h1>
+            <div class="mt-4">
+                <button class="btn btn-primary me-2" onclick="window.location.href='{{ path('app_adherants_new') }}'">Adherant</button>
+                <button class="btn btn-secondary me-2" onclick="window.location.href='{{ path('app_coachs_new') }}'">Coach</button>
+                <button class="btn btn-success" onclick="window.location.href='{{ path('app_administrators_new') }}'">Admin</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Messageries{% endblock %}
+
+{% block body %}
+    <h1>Create new Messageries</h1>
+
+    {{ include('messageries/_form.html.twig') }}
+
+    <a href="{{ path('app_messageries_index') }}">back to list</a>
+{% endblock %}

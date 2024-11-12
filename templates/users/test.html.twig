@@ -1,0 +1,18 @@
+{% if app.user is not null and app.user.name is not null %}
+    <p>Welcome, {{ app.user.name }} {{ app.user.email }} {{ app.user.roles[0] }}</p>
+    <script>
+        // Define a JavaScript object with user data
+        const userData = {
+            name: "{{ app.user.name|e('js') }}",
+            email: "{{ app.user.email|e('js') }}"
+        };
+        // Store the serialized user data in localStorage
+        localStorage.setItem('userdata', JSON.stringify(userData));
+        console.log("User data saved to localStorage:", userData);
+    </script>
+{% else %}
+    <p>User not logged in.</p>
+    <script>
+        localStorage.removeItem('userdata');
+    </script>
+{% endif %}

@@ -3,6 +3,22 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+# config/routes.yaml
 easy_admin_bundle:
-    resource: '../vendor/easycorp/easyadmin-bundle/src/Controller/'
+    resource: '@EasyAdminBundle/Controller/AbstractCrudController.php'
     type: annotation
+_web_profiler:
+    resource: '@WebProfilerBundle/Resources/config/routing/wdt.xml'
+    prefix: /_wdt
+
+_profiler:
+    resource: '@WebProfilerBundle/Resources/config/routing/profiler.xml'
+    prefix: /_profiler
+
+easy_admin:
+    resource: '@EasyAdminBundle/Controller/AbstractCrudController.php'
+    type: annotation
+
+
+
+

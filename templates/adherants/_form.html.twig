@@ -1,0 +1,5 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn-success">{{ button_label|default('Save') }}</button>
+      <a href="{{ path('home') }}" class="btn-back">Back to home</a>
+{{ form_end(form) }}

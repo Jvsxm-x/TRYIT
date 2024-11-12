@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Imc index{% endblock %}
+
+{% block body %}
+    <h1>Imc index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Weight</th>
+                <th>Height</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for imc in imcs %}
+            <tr>
+                <td>{{ imc.id }}</td>
+                <td>{{ imc.Weight }}</td>
+                <td>{{ imc.height }}</td>
+                <td>
+                    <a href="{{ path('app_imc_show', {'id': imc.id}) }}">show</a>
+                    <a href="{{ path('app_imc_edit', {'id': imc.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_imc_new') }}">Create new</a>
+{% endblock %}

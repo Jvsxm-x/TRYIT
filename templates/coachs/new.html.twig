@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Coachs{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body, html {
+            height: 100%;
+
+            margin: 0;
+        }
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100% - 60px); /* Adjust for footer height */
+            background-color: #e0e0e0; /* Background color */
+        }
+        .card {
+            width: 100%;
+            max-width: 700px;
+            margin-bottom: 71px;
+
+            padding: 30px;
+            background-color: #333;
+            border-radius: 12px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+            color: #f9f9f9;
+        }
+
+        .card-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #28a745;
+        }
+
+        .btn-submit {
+            background-color: #28a745;
+            color: #ffffff;
+            font-weight: bold;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 1.1em;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #218838;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 10px;
+            color: #17a2b8;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .btn-back:hover {
+            color: #117a8b;
+            text-decoration: underline;
+        }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+    <div class="wrapper">
+    <div class="card">
+        <h1 class="card-title">Create New Coach</h1>
+
+        {{ include('coachs/_form.html.twig', { 'button_label': 'Register' }) }}
+
+
+        </div>
+    </div>
+{% endblock %}

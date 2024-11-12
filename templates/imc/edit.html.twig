@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Imc{% endblock %}
+
+{% block body %}
+    <h1>Edit Imc</h1>
+
+    {{ include('imc/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_imc_index') }}">back to list</a>
+
+    {{ include('imc/_delete_form.html.twig') }}
+{% endblock %}

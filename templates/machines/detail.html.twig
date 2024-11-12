@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ machine.name }}</h1>
+    <p>{{ machine.description }}</p>
+    <img src="{{ asset(machine.image) }}" alt="{{ machine.name }}" style="max-width: 300px;">
+    <p>Number of Machines: {{ machine.nbrMachines }}</p>
+{% endblock %}

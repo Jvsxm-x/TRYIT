@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Schedule List{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .btn {
+            padding: 8px 12px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <h1>Schedule List</h1>
+    <a href="{{ path('scheduler_new') }}" class="btn">Create new schedule</a>
+    <table>
+        <thead>
+        <tr>
+            <th>Coach</th>
+            <th>Specialty</th>
+            <th>Salle</th>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for schedule in schedules %}
+            <tr>
+                <td>{{ schedule.coach.name }}</td>
+                <td>{{ schedule.coach.specialty }}</td>
+                <td>{{ schedule.salle }}</td>
+                <td>{{ schedule.date|date('Y-m-d H:i') }}</td>
+                <td>{{ schedule.startTime|date('H:i') }}</td>
+                <td>{{ schedule.endTime|date('H:i') }}</td>
+                <td>
+                    <a href="{{ path('scheduler_edit', {id: schedule.id}) }}" class="btn">Edit</a>
+                    <form method="post" action="{{ path('scheduler_delete', {id: schedule.id}) }}" style="display:inline-block;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ schedule.id) }}">
+                        <button type="submit" class="btn">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
