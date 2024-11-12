@@ -31,12 +31,12 @@ This is a **Gym Management System** that allows users, coaches, and administrato
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/yourusername/your-repository-name.git
+    git clone https://github.com/Jvsxm-x/TRYIT.git
     ```
 
 2. **Navigate to the project directory:**
     ```bash
-    cd your-repository-name
+    cd TRYIT
     ```
 
 3. **Install dependencies:**
